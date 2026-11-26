@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Can Rabies Stop the Signal?</title>
+<style>
+:root{--ink:#18334d;--muted:#64798d;--blue:#3985c9;--gold:#f4bd4f;--red:#dc625c;--green:#27875d;--border:#d8e4ee}
+*{box-sizing:border-box}body{margin:0;background:#eaf1f7;color:var(--ink);font-family:system-ui,-apple-system,"Segoe UI",sans-serif}
+.wrap{max-width:900px;margin:auto;padding:16px}.header{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:12px}
+h1{font-size:clamp(21px,3vw,29px);margin:0}.tag{background:#e0f1f0;color:#16716d;padding:7px 11px;border-radius:999px;font-size:12px;font-weight:800}
+.intro{background:white;border:1px solid var(--border);border-radius:16px;padding:14px 16px;margin-bottom:12px}.intro p{margin:4px 0 0;color:#526b80;font-size:14px;line-height:1.45}
+.stage{background:linear-gradient(180deg,#fbfdff,#f1f7fc);border:1px solid var(--border);border-radius:20px;padding:12px}.instruction{text-align:center;font-weight:800;font-size:14px;margin:4px 0 8px}
+.canvas{position:relative;width:100%;height:320px;border-radius:14px;background-image:radial-gradient(#c5d6e5 1px,transparent 1px);background-size:18px 18px;overflow:hidden;touch-action:pan-y}
+svg{width:100%;height:100%;display:block}.virus{position:absolute;width:62px;height:62px;left:7%;top:68%;z-index:5;cursor:grab;touch-action:none;user-select:none;filter:drop-shadow(0 4px 4px #17324d22)}
+.virus:active{cursor:grabbing}.virus svg{overflow:visible}.virus-label{position:absolute;left:4%;top:88%;font-size:12px;font-weight:800;color:#a74340;white-space:nowrap;pointer-events:none}
+.target-halo{fill:#fff4d9;stroke:#d79a27;stroke-width:3;stroke-dasharray:5 4}.target-halo.ready{fill:#e1f6eb;stroke:#27875d;stroke-dasharray:none}
+.signal-line{fill:none;stroke:#e6ae39;stroke-width:7;stroke-linecap:round;stroke-dasharray:9 7}.signal-dot{fill:#ffd05b;stroke:white;stroke-width:3;filter:drop-shadow(0 2px 3px #9d741d66)}.signal-dot.blocked{fill:#dc625c}
+.labels{font-size:13px;font-weight:800;fill:#426078}.small-label{font-size:11px;font-weight:700;fill:#6b8296}
+.status{margin-top:10px;background:#fff;border:1px solid var(--border);border-radius:12px;padding:11px 13px;min-height:43px;color:#536d82;font-size:13px;line-height:1.4}
+.status.good{background:#f0faf4;border-color:#b8dfc9;color:#176b49}.status.warn{background:#fff6f3;border-color:#f0c8c0;color:#a5423c}
+.actions{display:flex;gap:9px;justify-content:center;flex-wrap:wrap;margin-top:11px}button{font-family:inherit;font-weight:800;font-size:13px;border:0;border-radius:11px;padding:11px 17px;cursor:pointer}
+button:focus-visible{outline:3px solid #8dbce6;outline-offset:2px}button:disabled{opacity:.45;cursor:not-allowed}.primary{background:#287bc1;color:white}.secondary{background:#e4edf5;color:#36536d}
+.note{font-size:11px;color:#788da0;line-height:1.45;margin:11px 2px 0}.key{font-weight:800;color:#36536d}
+@media(max-width:560px){.wrap{padding:10px}.canvas{height:280px}.virus{width:54px;height:54px}.intro p{font-size:13px}}
+</style></head>
+<body><div class="wrap">
+<div class="header"><h1>Can Rabies Stop the Signal?</h1><span class="tag">NEURON CHALLENGE</span></div>
+<section class="intro"><b>Your mission</b><p>Move the rabies virus onto the highlighted receptor near the nerve ending. Then press <b>Play signal</b> to see what happens in this simplified model.</p></section>
+<section class="stage">
+<div class="instruction" id="instruction">1. Drag the rabies virus to the receptor</div>
+<div class="canvas" id="canvas">
+<svg viewBox="0 0 800 320" role="img" aria-label="Simplified neuron axon ending with a highlighted receptor">
+<path d="M40 143 C190 143 330 143 490 143 C535 143 548 120 570 105" fill="none" stroke="#287bc1" stroke-width="34" stroke-linecap="round"/>
+<path d="M40 143 C190 143 330 143 490 143 C535 143 548 120 570 105" fill="none" stroke="#b9daf2" stroke-width="25" stroke-linecap="round"/>
+<path d="M548 104 C572 68 623 65 650 91 C678 118 667 163 635 179 C606 194 566 178 553 150" fill="#b9daf2" stroke="#287bc1" stroke-width="5"/>
+<text x="300" y="94" class="labels" text-anchor="middle">AXON</text><text x="611" y="48" class="labels" text-anchor="middle">AXON TERMINAL</text>
+<circle id="target" cx="656" cy="127" r="24" class="target-halo"/>
+<path d="M646 128 L646 111 Q646 104 653 104 Q660 104 660 111 L660 128 M660 128 L660 139 Q660 146 667 146 Q674 146 674 139 L674 128" fill="none" stroke="#bd8123" stroke-width="7" stroke-linecap="round"/>
+<text x="656" y="218" class="small-label" text-anchor="middle">RECEPTOR</text><path d="M656 190 L656 164" stroke="#8ca2b5" stroke-width="1.5" stroke-dasharray="3 3"/>
+<path d="M690 145 L765 145" stroke="#c4d2df" stroke-width="2" stroke-dasharray="4 5"/>
+<path d="M720 200 C740 180 775 184 790 208 L790 280 L720 280 Z" fill="#e4f0f8" stroke="#a9c6dc" stroke-width="3"/>
+<text x="754" y="302" class="small-label" text-anchor="middle">NEXT CELL</text>
+<path id="signalPath" d="M65 143 C210 143 360 143 490 143 C535 143 548 120 570 105 C592 89 625 94 642 113" fill="none" stroke="transparent"/>
+<path d="M65 143 C210 143 360 143 490 143 C535 143 548 120 570 105 C592 89 625 94 642 113" class="signal-line" opacity=".25"/>
+<circle id="signal" class="signal-dot" cx="65" cy="143" r="10" opacity="0"/>
+<text x="72" y="185" class="small-label">MESSAGE TRAVELS THIS WAY</text><path d="M72 174 L72 156" stroke="#8ca2b5" stroke-width="1.5"/>
+</svg>
+<div class="virus" id="virus" role="button" tabindex="0" aria-label="Rabies virus. Drag to receptor." title="Drag me to the receptor">
+<svg viewBox="0 0 80 80" aria-hidden="true"><g stroke="#b74442" stroke-width="3" stroke-linecap="round">
+<path d="M40 5V13 M40 67V75 M5 40H13 M67 40H75 M15 15L21 21 M59 59L65 65 M65 15L59 21 M21 59L15 65 M27 8L30 16 M53 64L56 72 M8 27L16 30 M64 53L72 56 M53 8L50 16 M30 64L27 72 M8 53L16 50 M64 27L72 30"/></g>
+<rect x="17" y="20" width="46" height="43" rx="17" fill="#df6a61" stroke="#a94340" stroke-width="3"/>
+<circle cx="31" cy="35" r="4" fill="#f9c1a9"/><circle cx="49" cy="47" r="5" fill="#f9c1a9"/><circle cx="48" cy="30" r="3" fill="#a94340"/><circle cx="31" cy="51" r="3" fill="#a94340"/></svg></div>
+<div class="virus-label" id="virusLabel">RABIES VIRUS</div>
+</div>
+<div class="status" id="status" aria-live="polite">Drag the red rabies virus from the bottom-left onto the yellow receptor at the axon terminal.</div>
+<div class="actions"><button class="secondary" id="reset">↻ Reset</button><button class="primary" id="play" disabled>▶ Play signal</button></div>
+<p class="note"><span class="key">Science note:</span> This is a simplified game model. Rabies virus can attach to molecules on nerve cells and enter them; it does not simply plug a receptor to stop a nerve signal. The animation represents the virus interfering with the pathway as a visual learning metaphor.</p>
+</section></div>
+<script>
+(()=>{
+const canvas=document.getElementById('canvas'),virus=document.getElementById('virus'),label=document.getElementById('virusLabel'),target=document.getElementById('target'),status=document.getElementById('status'),instruction=document.getElementById('instruction'),play=document.getElementById('play'),signal=document.getElementById('signal');
+let placed=false,dragging=false,offsetX=0,offsetY=0,animation=null;
+function msg(t,k=''){status.textContent=t;status.className='status'+(k?' '+k)}
+function move(x,y){const r=canvas.getBoundingClientRect(),w=virus.offsetWidth,h=virus.offsetHeight;let l=Math.max(0,Math.min(r.width-w,x-r.left-offsetX)),t=Math.max(0,Math.min(r.height-h,y-r.top-offsetY));virus.style.left=l+'px';virus.style.top=t+'px';label.style.left=Math.max(2,l-8)+'px';label.style.top=Math.min(r.height-18,t+h+1)+'px'}
+function snap(){const c=canvas.getBoundingClientRect(),t=target.getBoundingClientRect(),w=virus.offsetWidth,h=virus.offsetHeight,x=t.left+t.width/2-c.left,y=t.top+t.height/2-c.top;virus.style.left=(x-w/2)+'px';virus.style.top=(y-h/2)+'px';label.style.left=(x-w/2-7)+'px';label.style.top=(y+h/2+2)+'px'}
+virus.addEventListener('pointerdown',e=>{if(placed)return;e.preventDefault();dragging=true;const r=virus.getBoundingClientRect();offsetX=e.clientX-r.left;offsetY=e.clientY-r.top;virus.setPointerCapture(e.pointerId)});
+virus.addEventListener('pointermove',e=>{if(dragging)move(e.clientX,e.clientY)});
+virus.addEventListener('pointerup',()=>{if(!dragging)return;dragging=false;const v=virus.getBoundingClientRect(),t=target.getBoundingClientRect(),x=v.left+v.width/2,y=v.top+v.height/2,tx=t.left+t.width/2,ty=t.top+t.height/2;if(Math.hypot(x-tx,y-ty)<75){placed=true;snap();virus.style.cursor='default';target.classList.add('ready');play.disabled=false;instruction.textContent='2. Receptor reached! Now play the signal';msg('Nice work! The virus is at the receptor. Press “Play signal” to test the pathway.','good')}else msg('Keep trying! Move the virus onto the highlighted yellow receptor.','warn')});
+virus.addEventListener('pointercancel',()=>dragging=false);
+virus.addEventListener('keydown',e=>{if((e.key==='Enter'||e.key===' ')&&!placed){placed=true;snap();target.classList.add('ready');play.disabled=false;instruction.textContent='2. Receptor reached! Now play the signal';msg('Nice work! The virus is at the receptor. Press “Play signal” to test the pathway.','good')}});
+function run(){if(!placed)return;if(animation)cancelAnimationFrame(animation);const path=document.getElementById('signalPath'),len=path.getTotalLength(),stop=len*.91,start=performance.now(),duration=2600;signal.setAttribute('opacity','1');play.disabled=true;instruction.textContent='3. Watch what happens to the message';msg('The message travels along the axon, but in this simplified model it cannot pass the virus at the receptor.','warn');
+function frame(now){let p=Math.min(1,(now-start)/duration),pt=path.getPointAtLength(stop*p);signal.setAttribute('cx',pt.x);signal.setAttribute('cy',pt.y);if(p<1)animation=requestAnimationFrame(frame);else{signal.setAttribute('class','signal-dot blocked');signal.setAttribute('r','12');play.disabled=false;msg('The signal stopped at the blocked point! In real rabies infection, the virus attaches to nerve-cell surface molecules and enters the neuron; it does not act as a simple plug.','warn')}}animation=requestAnimationFrame(frame)}
+play.addEventListener('click',run);
+document.getElementById('reset').addEventListener('click',()=>{if(animation)cancelAnimationFrame(animation);animation=null;placed=false;dragging=false;virus.style.left='7%';virus.style.top='68%';virus.style.cursor='grab';label.style.left='4%';label.style.top='88%';target.classList.remove('ready');signal.setAttribute('opacity','0');signal.setAttribute('class','signal-dot');signal.setAttribute('r','10');play.disabled=true;instruction.textContent='1. Drag the rabies virus to the receptor';msg('Drag the red rabies virus from the bottom-left onto the yellow receptor at the axon terminal.')});
+})();
+</script></body></html>
